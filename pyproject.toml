@@ -1,0 +1,12 @@
+[project]
+name = "payments-harness"
+version = "0.1.0"
+description = "Eval & reliability release-gate harness for a payments AI assistant"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.setuptools]
+packages = ["harness", "agent"]

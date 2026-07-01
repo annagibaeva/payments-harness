@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Node (only used for the docs/svg-to-png tool)
+node_modules/
+
+# Local env
+.env
+
+# Runtime outputs — NOT the committed golden cassette or pinned baseline
+reports/report.json
+reports/dashboard.html
+reports/responses/*.live.jsonl
