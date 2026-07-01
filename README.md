@@ -1,7 +1,6 @@
 # Payments Assistant — Eval & Reliability Harness
 
-<!-- After pushing, replace OWNER with your GitHub username so this badge renders live -->
-![release-gates](https://github.com/OWNER/payments-harness/actions/workflows/gates.yml/badge.svg)
+![release-gates](https://github.com/annagibaeva/payments-harness/actions/workflows/gates.yml/badge.svg)
 
 > A reproducible **release-gate** harness that decides *ship / don't ship* for a payments AI assistant — gating every release on **accuracy, hallucination, pass^k reliability, and cost/latency**, and blocking silent regressions.
 
