@@ -61,15 +61,18 @@ def gather_context(prompt: str, fx: Fixtures) -> str:
     # FX rates — detect ordered pairs of 3-letter currency codes in the prompt
     ccy_matches = _CCY_RE.findall(prompt)
     seen_pairs: set[str] = set()
-    for i, base in enumerate(ccy_matches):
-        for quote in ccy_matches[i + 1:]:
-            if base != quote:
+    for i, a in enumerate(ccy_matches):
+        for b in ccy_matches[i + 1:]:
+            if a == b:
+                continue
+            for base, quote in ((a, b), (b, a)):   # try BOTH directions
                 pair_key = f"{base}_{quote}"
-                if pair_key not in seen_pairs:
+                if pair_key in seen_pairs:
+                    continue
+                rate = mockdata.get_fx(fx, base, quote)
+                if rate is not None:
                     seen_pairs.add(pair_key)
-                    rate = mockdata.get_fx(fx, base, quote)
-                    if rate is not None:
-                        lines.append(f"fx rate {base}/{quote}: {rate}")
+                    lines.append(f"fx rate {base}/{quote}: {rate}")
 
     # Fees — keyword map
     prompt_lower = prompt.lower()

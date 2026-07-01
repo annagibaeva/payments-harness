@@ -27,8 +27,14 @@ def _score_numeric(text: str, exp: NumericExpected) -> bool:
     return any(abs(n - exp.value) <= tol for n in extract_numbers(text))
 
 
+def _normalize(text: str) -> str:
+    """Lowercase and strip markdown emphasis so `**issued**` matches `issued`
+    and phrasing isn't defeated by formatting the real model emits."""
+    return re.sub(r"[*_`]", "", text).lower()
+
+
 def _score_contains_all(text: str, exp: ContainsAllExpected) -> bool:
-    low = text.lower()
+    low = _normalize(text)
     return all(any(syn.lower() in low for syn in group) for group in exp.value)
 
 

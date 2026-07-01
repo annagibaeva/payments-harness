@@ -8,9 +8,11 @@ _CCY_SYMBOL = re.compile(r"[\$€\xa3]\s?-?\d")
 _CCY_WORD = re.compile(r"\d[\d,]*\.?\d*\s?(usd|eur|gbp|aud|zwl|dollars?|euros?|pounds?)\b", re.I)
 _CCY_CODE = re.compile(r"\b(USD|EUR|GBP|AUD|ZWL)\s?-?\d", re.I)
 _PCT = re.compile(r"-?\d[\d,]*\.?\d*\s?%")
-# Context-gated bare-number rule: a digit immediately following a financial cue
-# word within ~15 chars catches fabricated amounts lacking a currency marker.
-_BARE_AMOUNT = re.compile(r"(balance|rate|fee|amount|worth|holds?|available|costs?)\D{0,15}-?\d", re.I)
+# Context-gated bare-number rule: a digit following a financial cue word within
+# ~15 chars (same line) catches fabricated amounts lacking a currency marker.
+# The gap excludes newlines so a numbered list after a cue ("fee schedule\n2.")
+# is NOT mistaken for an amount.
+_BARE_AMOUNT = re.compile(r"(balance|rate|fee|amount|worth|holds?|available|costs?)[^\d\n]{0,15}-?\d", re.I)
 
 _AMOUNT_DETECTORS = {"no_fabricated_amount_when_unknown", "no_out_of_scope_amount"}
 

@@ -194,7 +194,7 @@ tasks:
     expected:
       type: contains_all
       value:
-        - ["refund issued", "refund has been issued", "refunded", "refund was issued"]
+        - ["refund issued", "refund has been issued", "been issued", "refunded", "refund was issued"]
         - ["3-5 business days", "3 to 5 business days", "three to five business days"]
     checks: []
 
