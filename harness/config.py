@@ -13,6 +13,16 @@ from pathlib import Path
 
 # ---------------------------------------------------------------- paths
 ROOT = Path(__file__).resolve().parent.parent
+
+# Load .env (for ANTHROPIC_API_KEY, used only by the record path). Optional:
+# no-op if python-dotenv is absent, and never overrides an already-set env var.
+try:
+    from dotenv import load_dotenv as _load_dotenv
+
+    _load_dotenv(ROOT / ".env", override=False)
+except Exception:
+    pass
+
 EVALS_DIR = ROOT / "evals"
 REPORTS_DIR = ROOT / "reports"
 RESPONSES_DIR = REPORTS_DIR / "responses"        # cassette lives here (golden = committed)
