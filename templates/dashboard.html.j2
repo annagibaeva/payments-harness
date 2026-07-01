@@ -1,0 +1,24 @@
+{# templates/dashboard.html.j2 #}
+<!doctype html><meta charset="utf-8"><title>Reliability Harness — {{ report.verdict }}</title>
+<style>
+ body{font:14px system-ui;margin:2rem;color:#0f172a}
+ .verdict{font-size:2rem;font-weight:700;padding:.4rem 1rem;border-radius:.5rem;display:inline-block}
+ .PASS{background:#dcfce7;color:#166534}.FAIL{background:#fef2f2;color:#991b1b}
+ table{border-collapse:collapse;margin-top:1rem}td,th{border:1px solid #e2e8f0;padding:.4rem .8rem;text-align:left}
+ .ok{color:#166534}.bad{color:#991b1b}.warn{color:#a16207}
+ .card{border:1px solid #fca5a5;border-radius:.5rem;padding:.6rem 1rem;margin:.6rem 0;background:#fef2f2}
+</style>
+<span class="verdict {{ report.verdict }}">{{ report.verdict }}</span>
+<p>benchmark={{ report.metrics.benchmark_version }} · fixtures={{ report.metrics.fixtures_version }} · config={{ report.metrics.config_hash }}</p>
+<table><tr><th>Gate</th><th>Observed</th><th>Threshold</th><th>Status</th></tr>
+{% for g in report.gates %}
+<tr><td>{{ g.name }}</td><td>{{ g.observed }}</td><td>{{ g.threshold }}</td>
+<td class="{{ 'ok' if g.passed else ('warn' if not g.blocking else 'bad') }}">
+{{ 'PASS' if g.passed else ('WARN' if not g.blocking else 'FAIL') }}</td></tr>
+{% endfor %}</table>
+{% if report.regression and report.regression.regressions %}
+<p class="bad">Regressions: {{ report.regression.regressions | join(', ') }}</p>{% endif %}
+{% for c in report.failures %}
+<div class="card"><b>{{ c.task_id }}</b> ({{ c.intent }}) — gate: {{ c.gate_breached }}<br>
+prompt: {{ c.prompt }}<br>expected: {{ c.expected }}<br>actual: {{ c.actual }}<br>why: {{ c.why }}</div>
+{% endfor %}
