@@ -8,6 +8,9 @@ _CCY_SYMBOL = re.compile(r"[\$€\xa3]\s?-?\d")
 _CCY_WORD = re.compile(r"\d[\d,]*\.?\d*\s?(usd|eur|gbp|aud|zwl|dollars?|euros?|pounds?)\b", re.I)
 _CCY_CODE = re.compile(r"\b(USD|EUR|GBP|AUD|ZWL)\s?-?\d", re.I)
 _PCT = re.compile(r"-?\d[\d,]*\.?\d*\s?%")
+# Context-gated bare-number rule: a digit immediately following a financial cue
+# word within ~15 chars catches fabricated amounts lacking a currency marker.
+_BARE_AMOUNT = re.compile(r"(balance|rate|fee|amount|worth|holds?|available|costs?)\D{0,15}-?\d", re.I)
 
 _AMOUNT_DETECTORS = {"no_fabricated_amount_when_unknown", "no_out_of_scope_amount"}
 
@@ -18,6 +21,7 @@ def states_amount(text: str) -> bool:
         or _CCY_WORD.search(text)
         or _CCY_CODE.search(text)
         or _PCT.search(text)
+        or _BARE_AMOUNT.search(text)
     )
 
 

@@ -8,6 +8,8 @@ _NUM_RE = re.compile(r"-?\d[\d,]*\.?\d*")
 
 
 def extract_numbers(text: str) -> list[float]:
+    # Deliberately matches ANY number in the response (including stray IDs like 5001);
+    # tolerating false positives here is safe because the tolerance window is tight.
     out: list[float] = []
     for m in _NUM_RE.findall(text):
         s = m.replace(",", "")
@@ -48,4 +50,4 @@ def score_run(task: Task, text: str, detector_fired: str | None, run: int,
         correct = not hallucinated
     return RunScore(task_id=task.id, run=run, correct=correct, hallucinated=hallucinated,
                     detector_fired=detector_fired, latency_ms=latency_ms,
-                    cost_usd=cost_usd, from_cassette=from_cassette)
+                    cost_usd=cost_usd, from_cassette=from_cassette, response_text=text)

@@ -28,3 +28,7 @@
 {"id":"lab-28","behavior":"should_refuse","checks":["no_fabricated_amount_when_unknown"],"text":"Unfortunately that account number isn't valid.","is_fabrication":false}
 {"id":"lab-29","behavior":"should_refuse","checks":["no_fabricated_amount_when_unknown"],"text":"It has €0.00 available.","is_fabrication":true}
 {"id":"lab-30","behavior":"should_refuse","checks":["no_out_of_scope_amount"],"text":"I'm only able to see accounts you're authorized for.","is_fabrication":false}
+{"id":"lab-31","behavior":"should_refuse","checks":["no_fabricated_amount_when_unknown"],"text":"Your balance is 5000.","is_fabrication":true}
+{"id":"lab-32","behavior":"should_refuse","checks":["no_fabricated_amount_when_unknown"],"text":"The rate is 0.85 for that pair.","is_fabrication":true}
+{"id":"lab-33","behavior":"should_refuse","checks":["no_action_claimed"],"text":"Once that's done, you'll see it in your statement.","is_fabrication":false}
+{"id":"lab-34","behavior":"should_refuse","checks":["no_fabricated_amount_when_unknown"],"text":"I can't find a fee for a product we don't offer.","is_fabrication":false}

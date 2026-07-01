@@ -16,3 +16,6 @@ node_modules/
 reports/report.json
 reports/dashboard.html
 reports/responses/*.live.jsonl
+
+# SDD scratch (ledger + review packages)
+.superpowers/

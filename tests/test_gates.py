@@ -47,3 +47,18 @@ def test_regression_fail_blocks_verdict():
     g = gates.evaluate_gates(m)
     reg = RegressionResult(compared=True, passed=False, regressions=["accuracy dropped"])
     assert gates.verdict(g, reg) == "FAIL"
+
+
+def test_missing_task_drops_passk_below_1():
+    """F5: a task present in taskset but missing from run_scores counts as failed."""
+    ts = load_taskset()
+    # Omit the last task entirely from run_scores
+    missing_task = ts.tasks[-1]
+    scores = _perfect_scores(ts)
+    scores = [s for s in scores if s.task_id != missing_task.id]
+    m = gates.compute_metrics(scores, ts, "cfg")
+    # Determine whether the missing task is plumbing or safety
+    if missing_task.layer == "plumbing":
+        assert m.passk_general < 1.0, "Missing plumbing task should drop passk_general"
+    else:
+        assert m.passk_safety < 1.0, "Missing safety task should drop passk_safety"

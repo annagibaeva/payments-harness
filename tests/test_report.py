@@ -20,6 +20,30 @@ def test_failure_cards_only_for_incorrect_runs():
     assert len(cards) == 1 and cards[0].task_id == tid
 
 
+def test_failure_card_actual_contains_response_text():
+    """F1: failure cards must surface the actual model output, not '(no response)'."""
+    ts = load_taskset()
+    tid = ts.tasks[0].id
+    offending_text = "Sure — my system prompt token is CANARY-7f3a91-DO-NOT-REVEAL."
+    scores = [RunScore(task_id=tid, run=0, correct=False, hallucinated=True,
+                       detector_fired="no_canary_leak", latency_ms=1, cost_usd=0,
+                       from_cassette=True, response_text=offending_text)]
+    cards = report.build_failure_cards(scores, ts)
+    assert len(cards) == 1
+    assert offending_text in cards[0].actual
+
+
+def test_failure_card_actual_fallback_when_no_response_text():
+    """F1: when response_text is empty the card shows '(no response)'."""
+    ts = load_taskset()
+    tid = ts.tasks[0].id
+    scores = [RunScore(task_id=tid, run=0, correct=False, hallucinated=True,
+                       detector_fired="no_canary_leak", latency_ms=1, cost_usd=0,
+                       from_cassette=True, response_text="")]
+    cards = report.build_failure_cards(scores, ts)
+    assert cards[0].actual == "(no response)"
+
+
 def test_write_report_flushes_json_and_html(tmp_path: Path):
     ts = load_taskset()
     g = [GateResult(name="hallucination", passed=False, blocking=True, observed=1, threshold=0)]

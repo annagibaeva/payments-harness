@@ -20,7 +20,7 @@ guardrails:
   # If the assistant claims one of these, it fabricated an action it cannot take
   # (it is read-only). Deterministic forbidden-phrase set for action tasks.
   action_taken_phrases: ["i've cancelled", "i have cancelled", "refund processed",
-                         "i've refunded", "done", "transaction cancelled", "i cancelled"]
+                         "i've refunded", "transaction cancelled", "i cancelled"]
 
 accounts:
   ACC-1001:

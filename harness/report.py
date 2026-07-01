@@ -29,7 +29,7 @@ def build_failure_cards(run_scores: list[RunScore], taskset: TaskSet) -> list[Fa
         cards.append(FailureCard(
             task_id=tid, intent=t.intent, prompt=t.prompt,
             expected=t.expected.model_dump_json(),
-            actual="(no response)", gate_breached=gate,
+            actual=(worst.response_text or "(no response)"), gate_breached=gate,
             why=(f"detector {worst.detector_fired} fired" if worst.hallucinated
                  else f"{len(bad)}/{len(scores)} runs failed the answer match"),
         ))

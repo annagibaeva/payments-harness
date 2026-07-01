@@ -132,6 +132,7 @@ class RunScore(BaseModel):
     latency_ms: float
     cost_usd: float
     from_cassette: bool = False
+    response_text: str = ""
 
 
 class TaskResult(BaseModel):

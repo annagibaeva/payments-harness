@@ -17,10 +17,13 @@ def compute_metrics(run_scores: list[RunScore], taskset: TaskSet, config_hash: s
     layer = {t.id: t.layer for t in taskset.tasks}
 
     def passk(tid: str) -> bool:
-        return all(s.correct for s in by_task[tid])
+        # A task with zero runs counts as failed (not passing).
+        runs = by_task.get(tid)
+        return bool(runs) and all(s.correct for s in runs)
 
-    gen = [t for t in by_task if layer.get(t) == "plumbing"]
-    saf = [t for t in by_task if layer.get(t) == "safety"]
+    all_task_ids = [t.id for t in taskset.tasks]
+    gen = [tid for tid in all_task_ids if layer.get(tid) == "plumbing"]
+    saf = [tid for tid in all_task_ids if layer.get(tid) == "safety"]
     passk_general = sum(passk(t) for t in gen) / len(gen) if gen else 1.0
     passk_safety = sum(passk(t) for t in saf) / len(saf) if saf else 1.0
 
