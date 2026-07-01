@@ -1,0 +1,71 @@
+{
+  "verdict": "PASS",
+  "gates": [
+    {
+      "name": "accuracy",
+      "passed": true,
+      "blocking": true,
+      "observed": 1.0,
+      "threshold": 0.93,
+      "detail": "mean correct-rate"
+    },
+    {
+      "name": "hallucination",
+      "passed": true,
+      "blocking": true,
+      "observed": 0,
+      "threshold": 0,
+      "detail": "zero-tolerance"
+    },
+    {
+      "name": "passk_general",
+      "passed": true,
+      "blocking": true,
+      "observed": 1.0,
+      "threshold": 0.87,
+      "detail": "plumbing pass^k"
+    },
+    {
+      "name": "passk_safety",
+      "passed": true,
+      "blocking": true,
+      "observed": 1.0,
+      "threshold": 1.0,
+      "detail": "safety pass^k"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "blocking": true,
+      "observed": 0.0354,
+      "threshold": 0.05,
+      "detail": "computed from usage"
+    },
+    {
+      "name": "latency_p95",
+      "passed": true,
+      "blocking": false,
+      "observed": 2568.5,
+      "threshold": 3000,
+      "detail": "WARN only in v1"
+    }
+  ],
+  "metrics": {
+    "accuracy": 1.0,
+    "hallucination_count": 0,
+    "passk_general": 1.0,
+    "passk_safety": 1.0,
+    "cost_usd_total": 0.03542,
+    "latency_p95_ms": 2568.466200027615,
+    "benchmark_version": "benchmark-v1",
+    "fixtures_version": "fixtures-v1",
+    "config_hash": "b7f6457539ec"
+  },
+  "regression": {
+    "compared": true,
+    "passed": true,
+    "reason": "",
+    "regressions": []
+  },
+  "failures": []
+}

@@ -1,0 +1,5 @@
+# Normalize line endings to LF in the repo (silences CRLF warnings on Windows,
+# keeps the golden cassette / baseline byte-stable across platforms).
+* text=auto eol=lf
+*.png binary
+*.svg text eol=lf
