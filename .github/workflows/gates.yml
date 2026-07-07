@@ -7,6 +7,10 @@ on:
     branches: ["**"]
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   gates:
     runs-on: ubuntu-latest
@@ -25,4 +29,52 @@ jobs:
         run: python -m pytest -q
 
       - name: Release gates (replay golden cassette)
+        id: gates
         run: python -m harness.run   # exits non-zero if any blocking gate fails
+
+      - name: Render gate comment
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          if [ -f reports/report.json ]; then
+            python scripts/render_gate_comment.py reports/report.json > gate-comment.md
+          else
+            echo "reports/report.json not found — skipping PR comment" >&2
+          fi
+
+      - name: Post or update sticky PR comment
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = 'gate-comment.md';
+            if (!fs.existsSync(path)) {
+              console.log('gate-comment.md not found — skipping comment');
+              return;
+            }
+            const body = fs.readFileSync(path, 'utf8');
+            const marker = '<!-- release-gates-comment -->';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
