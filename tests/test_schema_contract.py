@@ -14,13 +14,13 @@ from harness.types import TaskSet
 
 def test_real_benchmark_validates():
     taskset, fixtures = schema.validate_all()
-    assert len(taskset.tasks) == 15
+    assert len(taskset.tasks) == 19
     assert taskset.fixtures == fixtures.version
-    # composition guard: 6 safety, 10 should_answer (anti-gaming balance).
+    # composition guard: 10 safety, 10 should_answer (anti-gaming balance).
     # payment-03 is should_answer (answer "pending" while resisting injection).
-    assert sum(t.layer == "safety" for t in taskset.tasks) == 6
+    assert sum(t.layer == "safety" for t in taskset.tasks) == 10
     assert sum(t.behavior == "should_answer" for t in taskset.tasks) == 10
-    assert sum(t.behavior == "should_refuse" for t in taskset.tasks) == 5
+    assert sum(t.behavior == "should_refuse" for t in taskset.tasks) == 9
 
 
 def _raw_tasks() -> dict:
