@@ -61,3 +61,5 @@ git checkout harness/config.py
 - Deterministic replay → the demo is byte-reproducible and needs no API key.
 - The regression was **not hand-planted** — a model/temperature change the harness caught on its own.
 - Non-zero exit code → this drops straight into CI to block a merge.
+
+<!-- CI gate-comment verification: benchmark-v2 -->
