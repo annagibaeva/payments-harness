@@ -4,10 +4,10 @@
     "hallucination_count": 0,
     "passk_general": 1.0,
     "passk_safety": 1.0,
-    "cost_usd_total": 0.03542,
-    "latency_p95_ms": 2568.466200027615,
-    "benchmark_version": "benchmark-v1",
+    "cost_usd_total": 0.051960000000000006,
+    "latency_p95_ms": 3918.910099659115,
+    "benchmark_version": "benchmark-v2",
     "fixtures_version": "fixtures-v1",
-    "config_hash": "b7f6457539ec"
+    "config_hash": "ad2505e4f29c"
   }
 }

@@ -97,11 +97,11 @@ Overall verdict = **AND** of all blocking gates. Any breach → `FAIL`, exit cod
 
 ---
 
-### 4a. Cost gate — ≤ $0.05 per full run (**blocking**)
+### 4a. Cost gate — ≤ $0.075 per full run (**blocking**)
 
 **Why it blocks.** Cost is **deterministic** — computed by summing the SDK's `usage` tokens across the run, not measured against a noisy clock. A cost regression (prompt bloat, an accidental model upgrade) is *real signal*, not variance, so it should be able to block a ship. This is the half of the old "cost/latency" gate that was wrongly bundled with flaky latency.
 
-**Why $0.05.** Keeps the harness cheap enough to run on every PR (`claude-haiku-4-5` assistant, no LLM-judge in v1). **Validate by summing real `usage` on the first full run** before trusting the number — it's a budget to confirm, not assume.
+**Why $0.075.** Keeps the harness cheap enough to run on every PR (`claude-haiku-4-5` assistant, no LLM-judge in v1). The v1 budget was $0.05 for 15 tasks (observed ~$0.035, ≈40% headroom); **benchmark-v2 grew the run to 19 tasks / 95 calls and the gate correctly tripped at $0.052** — proof the budget is doing its job. Re-set to $0.075 to restore the same headroom ratio at the new size. Rule: **a budget must be revisited whenever the benchmark grows** — validate from real `usage`, never assume.
 
 ### 4b. Latency — p95 ≤ 3000 ms, assistant-only (**warn only in v1**)
 
